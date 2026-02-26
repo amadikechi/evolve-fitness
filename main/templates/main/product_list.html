@@ -1,0 +1,308 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Products - Evolve Fitness</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+        }
+        
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2ecc71;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #2ecc71;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #2ecc71;
+        }
+        
+        /* Category Filter Section */
+        .category-filters {
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .category-filters h3 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .filter-btn {
+            padding: 0.8rem 1.5rem;
+            border: 2px solid #2ecc71;
+            background: transparent;
+            color: #333;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .filter-btn:hover {
+            background: #2ecc71;
+            color: white;
+        }
+        
+        .filter-btn.active {
+            background: #2ecc71;
+            color: white;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(46, 204, 113, 0.2);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 1.5rem;
+        }
+        
+        .product-category {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: #f0f0f0;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 0.8rem;
+        }
+        
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            color: #2ecc71;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .product-stock {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 1rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #2ecc71;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background-color: #27ae60;
+        }
+        
+        .no-products {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+            grid-column: 1/-1;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        /* Category badge colors */
+        .category-supplements { background: #ffd700; color: #333; }
+        .category-activewear_male { background: #3498db; color: white; }
+        .category-activewear_female { background: #e83e8c; color: white; }
+        .category-equipment { background: #95a5a6; color: white; }
+        .category-meal_plan { background: #27ae60; color: white; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{% url 'home' %}" class="logo">EVOLVE</a>
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'product_list' %}">Products</a></li>
+                <li><a href="{% url 'book_coach' %}">Book Coach</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <h1>Our Products</h1>
+        
+        <!-- Category Filter Buttons -->
+        <div class="category-filters">
+            <h3>Shop by Category</h3>
+            <div class="filter-buttons">
+                <a href="{% url 'product_list' %}" class="filter-btn {% if not current_category %}active{% endif %}">All Products</a>
+                <a href="{% url 'product_list' %}?category=supplements" class="filter-btn {% if current_category == 'supplements' %}active{% endif %}">💊 Supplements</a>
+                <a href="{% url 'product_list' %}?category=activewear_male" class="filter-btn {% if current_category == 'activewear_male' %}active{% endif %}">👕 Men's Active Wear</a>
+                <a href="{% url 'product_list' %}?category=activewear_female" class="filter-btn {% if current_category == 'activewear_female' %}active{% endif %}">👚 Women's Active Wear</a>
+                <a href="{% url 'product_list' %}?category=equipment" class="filter-btn {% if current_category == 'equipment' %}active{% endif %}">🏋️ Gym Equipment</a>
+                <a href="{% url 'product_list' %}?category=meal_plan" class="filter-btn {% if current_category == 'meal_plan' %}active{% endif %}">📋 Meal Plans</a>
+            </div>
+        </div>
+        
+        <!-- Products Grid -->
+        <div class="products-grid">
+            {% for product in products %}
+            <div class="product-card">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                {% else %}
+                    <img src="https://via.placeholder.com/400x300?text=No+Image" alt="No image" class="product-image">
+                {% endif %}
+                <div class="product-info">
+                    <span class="product-category category-{{ product.category }}">
+                        {% if product.category == 'supplements' %}💊 Supplements
+                        {% elif product.category == 'activewear_male' %}👕 Men's Active Wear
+                        {% elif product.category == 'activewear_female' %}👚 Women's Active Wear
+                        {% elif product.category == 'equipment' %}🏋️ Gym Equipment
+                        {% elif product.category == 'meal_plan' %}📋 Meal Plans
+                        {% else %}{{ product.category }}
+                        {% endif %}
+                    </span>
+                    <h3 class="product-title">{{ product.name }}</h3>
+                    <p class="product-description">{{ product.description|truncatewords:15 }}</p>
+                    <div class="product-price">${{ product.price }}</div>
+                    <p class="product-stock">{% if product.stock > 0 %}In Stock ({{ product.stock }}){% else %}Out of Stock{% endif %}</p>
+                    <a href="#" class="btn">Add to Cart</a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="no-products">
+                <h3>No products found in this category</h3>
+                <p>Check back later or browse other categories</p>
+                <a href="{% url 'product_list' %}" class="btn" style="width: auto; margin-top: 1rem;">View All Products</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <footer>
+        <h3>Evolve Fitness</h3>
+        <p>Premium Active Wear for Champions</p>
+        <p>📞 <a href="https://wa.me/2348162887359" style="color: #25D366; text-decoration: none;">WhatsApp: +234 816 288 7359</a></p>
+        <p>&copy; 2026 Evolve Fitness. All rights reserved.</p>
+    </footer>
+</body>
+</html>
