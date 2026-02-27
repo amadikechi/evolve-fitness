@@ -4,22 +4,21 @@ Django settings for evolve_project project.
 
 import os
 from pathlib import Path
-import dj_database_url
 
 # Build paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-your-dev-key-here')
+SECRET_KEY = 'django-insecure-your-dev-key-here-change-this'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
+DEBUG = True  # Set to False after testing
 
-# Allow Render domain and your custom domain later
+# Add your PythonAnywhere domain
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    '.onrender.com',
+    'iykedata.pythonanywhere.com',  # Your PythonAnywhere domain
 ]
 
 # Application definition
@@ -30,9 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cloudinary_storage',
-    'cloudinary',
-    'main',
+    'main',  # Your app only - removed cloudinary
 ]
 
 MIDDLEWARE = [
@@ -66,12 +63,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'evolve_project.wsgi.application'
 
-# Database
+# Database - using SQLite for PythonAnywhere
 DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3',
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 # Password validation
@@ -101,11 +98,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'main/static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Media files
+# Media files - THIS IS WHERE YOUR PRODUCT IMAGES GO
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Enable WhiteNoise
+# Enable WhiteNoise for static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
@@ -115,18 +112,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'home'
-
-# ========== CLOUDINARY SETTINGS ==========
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'du1mbspdh',
-    'API_KEY': 328668446958385,
-    'API_SECRET': 'B99vbZXj6EFCTVyG_UKemK0AI4c',
-}
-
-# Use Cloudinary for media files in production
-if not DEBUG:
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
